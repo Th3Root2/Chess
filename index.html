@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#111317">
+<title>CHESS AI</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2716%27 height=%2716%27 fill=%27%237e92a8%27/%3E%3Crect x=%2716%27 y=%2716%27 width=%2716%27 height=%2716%27 fill=%27%237e92a8%27/%3E%3Crect x=%2716%27 width=%2716%27 height=%2716%27 fill=%27%23e3e7ec%27/%3E%3Crect y=%2716%27 width=%2716%27 height=%2716%27 fill=%27%23f0b429%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="mark"><i aria-hidden="true"></i><span>Chess AI</span></div>
+  <nav id="tabs" aria-label="Navigasi utama">
+    <button data-tab="game" class="on">Game</button>
+    <button data-tab="dash">Dashboard</button>
+    <button data-tab="ai">Versi AI</button>
+  </nav>
+</header>
+<div id="err" role="alert" hidden></div>
+
+<main id="tab-game" class="tab">
+  <div class="game">
+    <section class="stage" aria-label="Papan permainan">
+      <div class="statusbar">
+        <div id="status" class="status" data-turn="w" aria-live="polite">Memuat…</div>
+        <button id="bFlip" title="Putar papan">Putar</button>
+      </div>
+      <div class="boardwrap">
+        <div id="board" aria-label="Papan catur"></div>
+        <svg id="gmArrows" viewBox="0 0 8 8" aria-hidden="true"></svg>
+      </div>
+      <div class="actions">
+        <button id="bNew" class="primary">New Game</button>
+        <button id="bRestart">Restart</button>
+        <button id="bUndo">Undo</button>
+        <button id="bResign">Resign</button>
+      </div>
+    </section>
+
+    <aside class="side">
+      <div id="aibanner" class="banner"></div>
+
+      <details class="blk newgame" open>
+        <summary>Pengaturan permainan</summary>
+        <div class="setup">
+          <label>Mode
+            <select id="selMode"><option value="bot">Player vs Bot</option><option value="pvp">Player vs Player</option></select>
+          </label>
+          <label>Warna
+            <select id="selColor"><option value="w">Putih</option><option value="b">Hitam</option><option value="r">Acak</option></select>
+          </label>
+          <label id="lblDiff">Level bot
+            <select id="selDiff"><option value="easy">Easy</option><option value="medium" selected>Medium</option><option value="hard">Hard</option><option value="expert">Expert</option></select>
+          </label>
+        </div>
+        <p class="hint">Pengaturan dipakai saat menekan New Game.</p>
+      </details>
+
+      <section class="blk">
+        <h3>Riwayat langkah</h3>
+        <div id="moves" class="moves"></div>
+        <div id="engineInfo" class="meta"></div>
+      </section>
+
+      <section class="blk gm">
+        <h3>Grandmaster Assistant</h3>
+        <button id="gmToggle" class="gmt">Enable Cheat Mode</button>
+        <div id="gmBody" hidden>
+          <div class="gmgrid">
+            <button id="gmAnalyze" class="primary">Analyze Position</button>
+            <button id="gmStop">Stop Analysis</button>
+            <button id="gmShowBest" class="tog">Show Best Move</button>
+            <button id="gmShowAlt" class="tog">Show Alternative Moves</button>
+            <button id="gmNext">Next Best Move</button>
+            <button id="gmApply" class="apply">Apply Best Move</button>
+            <button id="gmJudge" class="wide">Periksa langkah terakhir</button>
+          </div>
+          <details class="gmset"><summary>Pengaturan analisis</summary>
+            <div class="setup">
+              <label>Preset<select id="gmPreset"><option value="quick">Cepat (Android)</option><option value="balanced">Seimbang</option><option value="deep">Dalam</option><option value="custom">Kustom</option></select></label>
+              <label>Depth maks<input id="gmDepth" type="number" min="1" max="30" inputmode="numeric"></label>
+              <label>Waktu (detik)<input id="gmTime" type="number" min="1" max="60" inputmode="numeric"></label>
+              <label>Multi-PV<input id="gmPV" type="number" min="1" max="5" inputmode="numeric"></label>
+              <label>Batas hash (entri)<input id="gmHash" type="number" min="10000" max="1000000" step="10000" inputmode="numeric"></label>
+            </div>
+            <label class="chk"><input type="checkbox" id="gmAuto"> Analisis otomatis saat giliran saya</label>
+            <label class="chk"><input type="checkbox" id="gmBotA"> Analisis gaya bot &amp; nilai langkah bot</label>
+          </details>
+          <div id="gmOut"></div>
+        </div>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<main id="tab-dash" class="tab" hidden><div id="dash" class="wrap"></div></main>
+<main id="tab-ai" class="tab" hidden><div id="aiPage" class="wrap"></div></main>
+
+<div id="modal" class="overlay" hidden role="dialog" aria-modal="true"><div id="modalBox" class="box"></div></div>
+
+<script src="js/chess-engine.js"></script>
+<script src="js/ai-evaluation.js"></script>
+<script src="js/ai-engine.js"></script>
+<script src="js/database.js"></script>
+<script src="js/match-recorder.js"></script>
+<script src="js/ai-learning.js"></script>
+<script src="js/ai-version-manager.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/grandmaster.js"></script>
+<script src="js/gm-ui.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
